@@ -1,0 +1,33 @@
+Problem Statement 1
+
+
+CODE :
+
+a = load '/user/acadgild/data/TitanicData.txt' using PigStorage(',') AS (passid: int,survived: int,pclass: int,name: chararray,sex: chararray,age: int,sibsp: int,parch: int,ticket: int,fare: int,cabin: chararray,embarked: chararray);
+b = FILTER a BY survived == 1;
+c = GROUP b BY sex;
+f = FOREACH c {
+GENERATE group AS sex,AVG(b.age) AS survage;
+};
+dump d;
+
+
+
+Problem Statement 2
+
+
+CODE :
+
+a = load '/user/acadgild/data/TitanicData.txt' using PigStorage(',') AS (passid: int,survived: int,pclass: int,name: chararray,sex: chararray,age: int,sibsp: int,parch: int,ticket: int,fare: int,cabin: chararray,embarked: chararray);
+b = FILTER a BY survived == 1;
+c = FILTER a BY survived == 0;
+d = GROUP b BY pclass;
+e = GROUP c BY pclass;
+f = FOREACH c {
+GENERATE group AS pcs,COUNT(b.survived) AS survage;
+};
+g = FOREACH c {
+GENERATE group AS pcs,COUNT(c.survived) AS diage;
+};
+h = JOIN f BY pcs, g BY pcs;
+dump h;
