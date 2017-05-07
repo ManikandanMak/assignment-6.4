@@ -23,11 +23,11 @@ b = FILTER a BY survived == 1;
 c = FILTER a BY survived == 0;
 d = GROUP b BY pclass;
 e = GROUP c BY pclass;
-f = FOREACH c {
-GENERATE group AS pcs,COUNT(b.survived) AS survage;
+f = FOREACH d {
+GENERATE group AS pclass,COUNT(b.survived) AS survage;
 };
-g = FOREACH c {
-GENERATE group AS pcs,COUNT(c.survived) AS diage;
+g = FOREACH e {
+GENERATE group AS pclass,COUNT(c.survived) AS diage;
 };
-h = JOIN f BY pcs, g BY pcs;
+h = JOIN f BY pclass, g BY pclass;
 dump h;
